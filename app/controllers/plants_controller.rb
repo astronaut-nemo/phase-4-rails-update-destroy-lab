@@ -18,8 +18,21 @@ class PlantsController < ApplicationController
     render json: plant, status: :created
   end
 
+  # PATCH /plants/:id
+  def update
+    # byebug
+    plant = Plant.find_by(id: params[:id])
+    if plant
+      plant.update(is_in_stock: params[:is_in_stock])
+      render json: plant, status: :accepted
+    else
+      render json: {error: "Plant Not Found"}, status: :not_found
+    end
+  end
+
   private
 
+  # Strong Params
   def plant_params
     params.permit(:name, :image, :price, :is_in_stock)
   end
